@@ -12,7 +12,7 @@ const Sidebar = () => {
 
       <div className={`sidebar ${open ? "open" : "closed"}`}>
 
-        <h3>{open ? "🚗 Safari wheels" : "🚗"}</h3>
+        <h3>{open ? "🚗 SW" : "🚗"}</h3>
 
         <Link to="/">
           <i className="bi bi-speedometer2"></i>

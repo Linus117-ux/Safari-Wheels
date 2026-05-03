@@ -9,7 +9,7 @@ const Navbar = ({ search, setSearch }) => {
   <div className="container">
     {/* Brand - Added slight letter spacing for a premium look */}
     <a className="navbar-brand fw-bold fs-4" href="#" style={{ letterSpacing: "1px" }}>
-      <span className="text-primary">Safari wheels</span> <span className="text-white">ENTERPRISES</span>
+      <span className="text-primary">SAFARI</span> <span className="text-white">WHEELS</span>
     </a>
 
     <button 
