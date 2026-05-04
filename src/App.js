@@ -16,6 +16,7 @@ import Book from './components/Book';
 import Getbookings from './components/Getbookings';
 import React, { useState } from 'react'
 import Addcar from './components/Addcar';
+import Chatbot from './components/Chatbot';
 
 function App() {
    
@@ -47,6 +48,7 @@ function App() {
     <Route path="/" element={<Dashboard />} />
     <Route path='/book' element={<Book/>}/>
    <Route path='/getbookings' element={<Getbookings  />} />
+   <Route path='/chatbot' element={<Chatbot />} />
    </Routes>
 </div>
    </div>

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios";
+import Chatbot from "./Chatbot";
 import Navbar from './Navbar';
 import { Navigate, useNavigate } from "react-router-dom"
 
 const Getcar = () => {
   let navigate = useNavigate();
+ 
   
   const [loading, setLoading] = useState("");
   const [cars, setCars] = useState([]);
@@ -73,7 +75,9 @@ const Getcar = () => {
                 >
                   🚗 Book Now
                 </button>
-                <button className="btn w-100 veiw-btn">
+                <button  className="btn w-100 veiw-btn"
+  onClick={() => navigate("/chatbot", { state: { car } })}
+                    >
                   👁 View Details
                 </button>
               </div>
@@ -86,6 +90,8 @@ const Getcar = () => {
       {filtered_products.length === 0 && !loading && (
         <p className="text-center">No cars found matching "{search}"</p>
       )}
+
+      <Chatbot />
     </div>
   );
 }
