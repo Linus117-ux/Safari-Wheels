@@ -1,12 +1,14 @@
 import React from 'react'
 import Chatbot from "./Chatbot";
 import { useNavigate } from "react-router-dom";
+import Mainnav from './Mainnav';
 
 const Dashboard = () => {
   const navigate = useNavigate();
 
   return (
     <div className='container-fluid p-0'>
+      <Mainnav />
        <div className="bg-dark text-white text-center d-flex flex-column justify-content-center align-items-center  hero">
         
         <h1 className="fw-bold display-4">Find Your Perfect Ride</h1>
@@ -206,7 +208,7 @@ const Dashboard = () => {
 
 
 
- <footer className="bg-dark text-white pt-5 pb-3 mt-5">
+ <footer id="footer" className="bg-dark text-white pt-5 pb-3 mt-5">
       <div className="container">
 
         <div className="row">

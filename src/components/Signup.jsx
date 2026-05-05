@@ -9,6 +9,16 @@ const Signup = () => {
   const [loading , setLoading]= useState("")
   const [success , setSuccess]= useState("")
   const [error , setError]= useState("")
+  const [strength, setStrength] = useState("");
+ const checkPasswordStrength = (password) => {
+  if (password.length < 4) {
+    return "Weak";
+  } else if (password.length < 8) {
+    return "Medium";
+  } else {
+    return "Strong";
+  }
+};
   const handlesubmit = async(e)=>{
         e.preventDefault()
         setLoading("Please wait...")
@@ -51,9 +61,32 @@ const Signup = () => {
             <label htmlFor=""> <i className="bi bi-telephone-fill text-primary me-2"></i>254*********</label>
               </div>
               <div className='form-floating mb-3'>
-            <input type="password" className="form-control rounded-pill" placeholder='enter your password' onChange={(e)=>setPassword(e.target.value)} />
+            <input
+  type="password"
+  className="form-control rounded-pill"
+  placeholder="enter your password"
+  onChange={(e) => {
+    const value = e.target.value;
+    setPassword(value);
+    setStrength(checkPasswordStrength(value));
+  }}
+/>
             <label htmlFor=""> <i className="bi bi-shield-lock-fill text-primary me-2"></i>Enter your password</label>
               </div>
+           {password && (
+  <p
+    style={{
+      color:
+        strength === "Weak"
+          ? "red"
+          : strength === "Medium"
+          ? "orange"
+          : "green",
+    }}
+  >
+    Password Strength: {strength}
+  </p>
+)}
             <button type="submit" className="btn btn-primary w-100 rounded-pill click-btn">
                <i className="bi bi-person-plus me-2"></i>
                    Create Account

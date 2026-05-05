@@ -1,81 +1,154 @@
 import React from 'react'
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = ({ search, setSearch }) => {
+  const navigate = useNavigate();
+
+  const user = localStorage.getItem("user_id");
+  const role = localStorage.getItem("role");
+  const username = localStorage.getItem("user_name");
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/signin");
+  };
 
   return (
     <div className="row">
+      <nav className="navbar navbar-expand-lg navbar-dark sticky-top border-bottom border-secondary py-3 shadow-sm">
+        <div className="container">
 
-  <nav className="navbar navbar-expand-lg navbar-dark  sticky-top border-bottom border-secondary py-3 shadow-sm">
-  <div className="container">
-    {/* Brand - Added slight letter spacing for a premium look */}
-    <a className="navbar-brand fw-bold fs-4" href="#" style={{ letterSpacing: "1px" }}>
-      <span className="text-primary">SAFARI</span> <span className="text-white">WHEELS</span>
-    </a>
+          {/* Brand */}
+          <Link className="navbar-brand fw-bold fs-4" to="/" style={{ letterSpacing: "1px" }}>
+            <span className="text-primary">SAFARI</span> <span className="text-white">WHEELS</span>
+          </Link>
 
-    <button 
-      className="navbar-toggler" 
-      type="button" 
-      data-bs-toggle="collapse" 
-      data-bs-target="#navbarNav"
-    >
-      <span className="navbar-toggler-icon"></span>
-    </button>
-
-    <div className="collapse navbar-collapse" id="navbarNav">
-      {/* Centered Links - Added gap-3 for better horizontal spacing */}
-      <ul className="navbar-nav mx-auto gap-3">
-        <li className="nav-item">
-          <a className="nav-link active fw-semibold" href="/">Home</a>
-        </li>
-        
-        {/* Dropdown */}
-        <li className="nav-item dropdown">
-          <a 
-            className="nav-link dropdown-toggle text-light" 
-            href="#" 
-            role="button" 
-            data-bs-toggle="dropdown" 
-          >
-            Services
-          </a>
-          <ul className="dropdown-menu dropdown-menu-dark shadow">
-            <li><a className="dropdown-item" href="#">Car Rentals</a></li>
-            <li><a className="dropdown-item" href="#">Chauffeur Services</a></li>
-            <li><hr className="dropdown-divider" /></li>
-            <li><a className="dropdown-item" href="#">Support</a></li>
-          </ul>
-        </li>
-
-        <li className="nav-item">
-          <a className="nav-link text-light opacity-75" href="/addcar">Add car</a>
-        </li>
-      </ul>
-
-      {/* Search Bar - Wider button, placeholder changed to match context */}
-      <form className="d-flex align-items-center" role="search">
-        <div className="input-group">
-          <input 
-            className="form-control bg-dark border-secondary text-white shadow-none" 
-            type="search" 
-            value={search}
-            onChange={(e)=>setSearch(e.target.value)}
-            placeholder="Find a car..." 
-            style={{ borderRadius: "20px 0 0 20px" }}
-          />
           <button 
-            className="btn btn-primary text-dark fw-bold px-4" 
-            type="submit"
-            style={{ borderRadius: "0 20px 20px 0" }}
+            className="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navbarNav"
           >
-            Search
+            <span className="navbar-toggler-icon"></span>
           </button>
-        </div>
-      </form>
-    </div>
-  </div>
-</nav>
-              </div>
-  )
-}
 
-export default Navbar
+          <div className="collapse navbar-collapse" id="navbarNav">
+
+            {/* Center Links */}
+            <ul className="navbar-nav mx-auto gap-3">
+              <li className="nav-item">
+                <Link className="nav-link active fw-semibold" to="/">Home</Link>
+              </li>
+
+{role === "admin" && (
+  <li className="nav-item">
+    <Link className="nav-link text-light opacity-75" to="/addcar">
+      Add car
+    </Link>
+  </li>
+)}
+            </ul>
+
+            {/* Search */}
+            <form className="d-flex align-items-center me-3">
+              <div className="input-group">
+                <input 
+                  className="form-control bg-dark border-secondary text-white shadow-none" 
+                  type="search" 
+                  value={search}
+                  onChange={(e)=>setSearch(e.target.value)}
+                  placeholder="Find a car..."
+                  style={{ borderRadius: "20px 0 0 20px" }}
+                />
+                <button 
+                  className="btn btn-primary text-dark fw-bold px-4" 
+                  type="submit"
+                  style={{ borderRadius: "0 20px 20px 0" }}
+                >
+                  Search
+                </button>
+              </div>
+            </form>
+
+            {/* 🔥 AUTH BUTTONS */}
+           <div className="d-flex align-items-center">
+
+  {!user ? (
+    <>
+      <Link to="/signin" className="btn btn-outline-light me-2">
+        Login
+      </Link>
+      <Link to="/signup" className="btn btn-primary">
+        Signup
+      </Link>
+    </>
+  ) : (
+    <div className="dropdown">
+      <button 
+        className="btn btn-dark dropdown-toggle d-flex align-items-center"
+        type="button"
+        data-bs-toggle="dropdown"
+      >
+        <i className="bi bi-person-circle me-2"></i>
+        {username || "User"}
+      </button>
+
+      <ul className="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow">
+
+        <li>
+          <span className="dropdown-item-text small text-white-50">
+            Signed in as <strong>{username}</strong>
+          </span>
+        </li>
+
+        <li><hr className="dropdown-divider" /></li>
+
+        {/* USER */}
+        <li>
+          <Link to="/getbookings" className="dropdown-item">
+            <i className="bi bi-calendar-check me-2"></i>
+            My Bookings
+          </Link>
+        </li>
+
+        {/* ADMIN ONLY */}
+        {role === "admin" && (
+          <>
+            <li>
+              <Link to="/dashboard" className="dropdown-item">
+                <i className="bi bi-speedometer2 me-2"></i>
+                Dashboard
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/users" className="dropdown-item">
+                <i className="bi bi-people me-2"></i>
+                Manage Users
+              </Link>
+            </li>
+          </>
+        )}
+
+        <li><hr className="dropdown-divider" /></li>
+
+        <li>
+          <button onClick={handleLogout} className="dropdown-item text-danger">
+            <i className="bi bi-box-arrow-right me-2"></i>
+            Logout
+          </button>
+        </li>
+
+      </ul>
+    </div>
+  )}
+
+</div>
+
+          </div>
+        </div>
+      </nav>
+    </div>
+  );
+};
+
+export default Navbar;

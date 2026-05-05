@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
 
+  const user = localStorage.getItem("user_id");
+  const role = localStorage.getItem("role");
+
   return (
     <>
       <button className="toggle-btn" onClick={() => setOpen(!open)}>
@@ -14,29 +17,54 @@ const Sidebar = () => {
 
         <h3>{open ? "🚗 SW" : "🚗"}</h3>
 
+        {/* ALWAYS VISIBLE */}
         <Link to="/">
-          <i className="bi bi-speedometer2"></i>
-          {open && <span> Dashboard</span>}
+          <i className="bi bi-house"></i>
+          {open && <span> Home</span>}
         </Link>
 
         <Link to="/getcar">
           <i className="bi bi-car-front"></i>
           {open && <span> Cars</span>}
         </Link>
-         <Link to="/getbookings">
-          <i className="bi bi-car-front"></i>
-          {open && <span> My bookings</span>}
-        </Link>
 
-        <Link to="/signup">
-          <i className="bi bi-people"></i>
-          {open && <span> Users</span>}
-        </Link>
+        {/* ONLY WHEN LOGGED IN */}
+        {user && (
+          <Link to="/getbookings">
+            <i className="bi bi-calendar-check"></i>
+            {open && <span> My Bookings</span>}
+          </Link>
+        )}
 
-        <Link to="/signin">
-          <i className="bi bi-box-arrow-in-right"></i>
-          {open && <span> Login</span>}
-        </Link>
+        {/* ADMIN ONLY */}
+        {role === "admin" && (
+          <>
+            <Link to="/dashboard">
+              <i className="bi bi-speedometer2"></i>
+              {open && <span> Dashboard</span>}
+            </Link>
+
+            <Link to="/users">
+              <i className="bi bi-people"></i>
+              {open && <span> Users</span>}
+            </Link>
+          </>
+        )}
+
+        {/* NOT LOGGED IN */}
+        {!user && (
+          <>
+            <Link to="/signin">
+              <i className="bi bi-box-arrow-in-right"></i>
+              {open && <span> Login</span>}
+            </Link>
+
+            <Link to="/signup">
+              <i className="bi bi-person-plus"></i>
+              {open && <span> Signup</span>}
+            </Link>
+          </>
+        )}
 
       </div>
     </>

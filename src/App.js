@@ -17,6 +17,8 @@ import Getbookings from './components/Getbookings';
 import React, { useState } from 'react'
 import Addcar from './components/Addcar';
 import Chatbot from './components/Chatbot';
+import Mainnav from './components/Mainnav';
+import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
    
@@ -42,13 +44,14 @@ function App() {
     <Route path='/test' element={<Testcomponent/>} />
     <Route path='/signin' element={<Signin/>}/>
     <Route path='/signup' element={<Signup/>}/>
-    <Route path='/getcar' element={<Getcar/>}/>
+    <Route path='/getcar' element={  <ProtectedRoute> <Getcar /> </ProtectedRoute>}/>
     <Route path='/addcar' element={<Addcar/>}/>
     
     <Route path="/" element={<Dashboard />} />
     <Route path='/book' element={<Book/>}/>
    <Route path='/getbookings' element={<Getbookings  />} />
    <Route path='/chatbot' element={<Chatbot />} />
+   <Route path='/Mainnav' element={<Mainnav />} />
    </Routes>
 </div>
    </div>

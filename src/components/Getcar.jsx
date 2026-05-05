@@ -12,6 +12,7 @@ const Getcar = () => {
   const [cars, setCars] = useState([]);
   const [error, setError] = useState("");
   const[search,setSearch]=useState("")
+  const user = localStorage.getItem("user_id");
   
 
  const filtered_products = cars.filter((item) => {
@@ -33,10 +34,13 @@ const Getcar = () => {
     }
   };
 
-  useEffect(() => {
-    getcars();
-  }, []);
-  
+   useEffect(() => {
+    if (!user) {
+      navigate("/signin");
+    }else {
+      getcars();
+    }
+  }, [user, navigate]);
   const imagepath = "http://127.0.0.1:5000/static/images/";
 
   return (
