@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import Chatbot from "./Chatbot";
 import Navbar from './Navbar';
-import { Navigate, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 
 const Getcar = () => {
   let navigate = useNavigate();

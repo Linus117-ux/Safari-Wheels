@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import Navbar from './Navbar'
 
 const Getbookings = () => {
@@ -18,28 +18,28 @@ const Getbookings = () => {
     return name.includes(term) || desc.includes(term)
   })
 
-  const getbookings = async () => {
-    setLoading("Please wait...")
-    try {
-      const response = await axios.get("http://linushiggs.alwaysdata.net/api/getbookings")
+  const getbookings = useCallback(async () => {
+  setLoading("Please wait...")
 
-      // ONLY THIS USER'S BOOKINGS
-      const userBookings = response.data.filter(
-        (booking) => String(booking.user_id) === String(user_id)
-      )
+  try {
+    const response = await axios.get("http://linushiggs.alwaysdata.net/api/getbookings")
 
-      setCars(userBookings)
-      setLoading("")
-    } catch (error) {
-      console.log(error)
-      setError("Failed to load bookings")
-      setLoading("")
-    }
+    const userBookings = response.data.filter(
+      (booking) => String(booking.user_id) === String(user_id)
+    )
+
+    setCars(userBookings)
+    setLoading("")
+  } catch (error) {
+    console.log(error)
+    setError("Failed to load bookings")
+    setLoading("")
   }
+}, [user_id])
 
   useEffect(() => {
     getbookings()
-  }, [])
+  }, [getbookings])
 
   const imagepath = "http://linushiggs.alwaysdata.net/static/images/"
 

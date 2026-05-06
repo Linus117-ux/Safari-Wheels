@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../components/assets/logo.png";
+
 
 
 const Sidebar = () => {

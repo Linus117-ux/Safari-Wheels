@@ -92,12 +92,12 @@ const Book = () => {
       formdata.append("phone", phone)
       formdata.append("payment_status", "pending")
 
-      const bookingRes = await axios.post(
-        "http://linushiggs.alwaysdata.net/api/bookings",
-        formdata
-      )
+      // const bookingRes = await axios.post(
+      //   "http://linushiggs.alwaysdata.net/api/bookings",
+      //   formdata
+      // )
 
-      const bookingId = bookingRes.data.booking_id
+      // const bookingId = bookingRes.data.booking_id
 
       // =========================
       // 2. INITIATE PAYMENT
