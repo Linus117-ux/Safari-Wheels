@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from "react-router-dom";
+import logo from "../components/assets/logo.png";
+
 
 const Mainnav = () => {
     const navigate = useNavigate();
@@ -17,10 +19,13 @@ const Mainnav = () => {
             <div className="container">
     
               {/* Brand */}
-              <Link className="navbar-brand fw-bold fs-4" to="/" style={{ letterSpacing: "1px" }}>
-                <span className="text-primary">SAFARI</span> <span className="text-white">WHEELS</span>
-              </Link>
-    
+              <Link className="navbar-brand d-flex align-items-center" to="/">
+  <img 
+    src={logo} 
+    alt="Safari Wheels" 
+    style={{ height: "50px", objectFit: "contain" }}
+  />
+</Link>
               <button 
                 className="navbar-toggler" 
                 type="button" 
@@ -114,7 +119,7 @@ const Mainnav = () => {
             {role === "admin" && (
               <>
                 <li>
-                  <Link to="/dashboard" className="dropdown-item">
+                  <Link to="/admin" className="dropdown-item">
                     <i className="bi bi-speedometer2 me-2"></i>
                     Dashboard
                   </Link>

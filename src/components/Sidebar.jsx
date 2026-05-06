@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import logo from "../components/assets/logo.png";
+
 
 const Sidebar = () => {
   const [open, setOpen] = useState(true);
@@ -39,7 +41,7 @@ const Sidebar = () => {
         {/* ADMIN ONLY */}
         {role === "admin" && (
           <>
-            <Link to="/dashboard">
+            <Link to="/admin">
               <i className="bi bi-speedometer2"></i>
               {open && <span> Dashboard</span>}
             </Link>

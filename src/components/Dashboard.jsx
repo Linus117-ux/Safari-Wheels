@@ -73,6 +73,9 @@ const Dashboard = () => {
             process, flexible rental options, and secure payments through M-Pesa.
           </p>
 
+
+
+        
           {/* FEATURES */}
           <div className="row mt-4">
             <div className="col-6 mb-3">
@@ -153,6 +156,41 @@ const Dashboard = () => {
     </div>
   </div>
 </div>
+<div className="container py-5 text-center">
+  <h2 className="fw-bold mb-3">🤖 Smart Car Assistant</h2>
+
+  <p className="lead text-white">
+    Our AI-powered chatbot helps you find the perfect car instantly.
+    Just ask anything about available vehicles, pricing, performance, or booking details.
+  </p>
+
+  <div className="row mt-4">
+    <div className="col-md-4">
+      <h5>🚗 Car Information</h5>
+      <p className="text-white">
+        Get full details like engine, horsepower, speed, fuel type, and price.
+      </p>
+    </div>
+
+    <div className="col-md-4">
+      <h5>💬 Instant Answers</h5>
+      <p className="text-white">
+        Ask questions like "Different brands, newton metre  and their current prices?" and get instant responses.
+      </p>
+    </div>
+
+    <div className="col-md-4">
+      <h5>📅 Booking Help</h5>
+      <p className="text-white">
+        The chatbot guides you on how to book your dream car easily.
+      </p>
+    </div>
+  </div>
+
+  <div className="mt-4 p-3 bg-primary text-white rounded">
+    <strong>💡 Tip:</strong> Want to buy or rent a car? Just talk to the chatbot — it will show you available cars and guide you step by step.
+  </div>
+</div>
 
 
 
@@ -222,6 +260,18 @@ const Dashboard = () => {
               Affordable and reliable car rentals across Nairobi. 
               Book your ride easily and pay securely via M-Pesa.
             </p>
+             <h2 class=" text-primary">Stay connected</h2>
+                <a href="https://facebook.com">
+                    <img src="images/fb.png" alt="facebook"/>
+                </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="https://instagram.com">
+                    <img src="images/in.png" alt="instagram"/>
+                </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="https://x.com">
+                    <img src="images/x.png" alt="twitter"/>
+                </a>
+                <p class="text-white">Make sure you follow us on the Webpages above in order to be notified of any new
+                    releases.</p>
           </div>
 
           {/* QUICK LINKS */}
@@ -249,7 +299,7 @@ const Dashboard = () => {
             <h6 className="fw-bold">Contact Us</h6>
             <p className=" mb-1">📍 Nairobi, Kenya</p>
             <p className=" mb-1">📞 +254 700 000 000</p>
-            <p className="text-white">✉ info@linusenterprises.com</p>
+            <p className="text-white">✉ info@safariwheels.com</p>
           </div>
 
         </div>
@@ -259,13 +309,13 @@ const Dashboard = () => {
         {/* BOTTOM */}
         <div className="text-center">
           <p className="mb-0 text-white">
-            © 2026 Linus Enterprises | All Rights Reserved
+            © 2026 Safari Wheels | All Rights Reserved
           </p>
         </div>
 
       </div>
     </footer>
-
+<Chatbot />
 
     </div>
 

@@ -242,10 +242,11 @@ h2 {
 .sidebar {
   width: 220px;
   height: 100vh;
-  background: #0f172a;
+  background: #0f172a !important;
   color: white;
-  position: fixed;
   padding: 20px;
+  position: fixed;
+  overflow-x: hidden;
 }
 
 .sidebar a {

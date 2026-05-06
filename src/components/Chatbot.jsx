@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useRef , useEffect } from "react";
 
 const Chatbot = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
+  const chatEndRef = useRef(null);
+
+  const handleKeyPress = (e) => {
+  if (e.key === "Enter") {
+    sendMessage();
+  }
+};
 
   const sendMessage = async () => {
     if (!message.trim()) return;
@@ -13,7 +20,7 @@ const Chatbot = () => {
     setChat((prev) => [...prev, userMsg]);
 
     try {
-      const res = await fetch("http://127.0.0.1:5000/chat", {
+      const res = await fetch("http://linushiggs.alwaysdata.net/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),
@@ -57,6 +64,9 @@ Torque: ${c.torque}`
 
     setMessage("");
   };
+  useEffect(() => {
+  chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+}, [chat]);
 
   return (
     <>
@@ -98,45 +108,48 @@ Torque: ${c.torque}`
           }}
         >
           {/* Messages */}
-          <div
-            style={{
-              flex: 1,
-              overflowY: "auto",
-              padding: 10,
-              background: " #282c34",
-            }}
-          >
-            {chat.map((c, i) => (
-              <div
-                key={i}
-                style={{
-                  marginBottom: 12,
-                  textAlign: c.sender === "user" ? "right" : "left",
-                }}
-              >
-                <div
-                  style={{
-                    display: "inline-block",
-                    padding: "8px 10px",
-                    borderRadius: 10,
-                    background:
-                      c.sender === "user" ? "#0d6efd" : "#0c69ff",
-                    color: c.sender === "user" ? "white" : "black",
-                    whiteSpace: "pre-line",
-                    maxWidth: "90%",
-                  }}
-                >
-                  {c.text}
-                </div>
-              </div>
-            ))}
-          </div>
+         <div
+  style={{
+    flex: 1,
+    overflowY: "auto",
+    padding: 10,
+    background: "#282c34",
+  }}
+>
+  {chat.map((c, i) => (
+    <div
+      key={i}
+      style={{
+        marginBottom: 12,
+        textAlign: c.sender === "user" ? "right" : "left",
+      }}
+    >
+      <div
+        style={{
+          display: "inline-block",
+          padding: "8px 10px",
+          borderRadius: 10,
+          background: c.sender === "user" ? "#0d6efd" : "#0c69ff",
+          color: c.sender === "user" ? "white" : "black",
+          whiteSpace: "pre-line",
+          maxWidth: "90%",
+        }}
+      >
+        {c.text}
+      </div>
+    </div>
+  ))}
+
+  {/* 👇 AUTO SCROLL TARGET (IMPORTANT) */}
+  <div ref={chatEndRef} />
+</div>
 
           {/* Input */}
           <div style={{ display: "flex", borderTop: "1px solid #ddd" }}>
             <input
               value={message}
               onChange={(e) => setMessage(e.target.value)}
+               onKeyDown={handleKeyPress}
               placeholder="Ask about cars..."
               style={{
                 flex: 1,

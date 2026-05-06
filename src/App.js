@@ -19,6 +19,7 @@ import Addcar from './components/Addcar';
 import Chatbot from './components/Chatbot';
 import Mainnav from './components/Mainnav';
 import ProtectedRoute from './components/ProtectedRoute';
+import AdminDashboard from './components/Admindashboard';
 
 function App() {
    
@@ -52,6 +53,7 @@ function App() {
    <Route path='/getbookings' element={<Getbookings  />} />
    <Route path='/chatbot' element={<Chatbot />} />
    <Route path='/Mainnav' element={<Mainnav />} />
+   <Route path='/admin' element={<AdminDashboard />} />
    </Routes>
 </div>
    </div>

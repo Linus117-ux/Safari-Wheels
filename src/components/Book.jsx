@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom"
 
 const Book = () => {
   const { car } = useLocation().state || {}
-  const imagepath = "http://127.0.0.1:5000/static/images/"
+  const imagepath = "http://linushiggs.alwaysdata.net/static/images/"
 
   const [phone, setPhone] = useState("")
   const [startdate, setStartdate] = useState("")
@@ -43,7 +43,7 @@ const Book = () => {
     formdata.append("phone", phone)
 
     const res = await axios.post(
-      "http://127.0.0.1:5000/api/mpesa_payment",
+      "http://linushiggs.alwaysdata.net/api/mpesa_payment",
       formdata
     )
 
@@ -55,6 +55,7 @@ const Book = () => {
   // =========================
   const handlesubmit = async (e) => {
     e.preventDefault()
+     const user_id = localStorage.getItem("user_id")
 
     setError("")
     setSuccess("")
@@ -83,7 +84,7 @@ const Book = () => {
       setLoading("Saving booking...")
 
       const formdata = new FormData()
-      formdata.append("user_id", 3)
+      formdata.append("user_id", user_id)
       formdata.append("car_id", car.car_id)
       formdata.append("start_date", startdate)
       formdata.append("end_date", enddate)
@@ -92,7 +93,7 @@ const Book = () => {
       formdata.append("payment_status", "pending")
 
       const bookingRes = await axios.post(
-        "http://127.0.0.1:5000/api/bookings",
+        "http://linushiggs.alwaysdata.net/api/bookings",
         formdata
       )
 

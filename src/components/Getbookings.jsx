@@ -6,23 +6,29 @@ const Getbookings = () => {
   const [loading, setLoading] = useState("")
   const [cars, setCars] = useState([])
   const [error, setError] = useState("")
-  const[search,setSearch]=useState("")
-  
+  const [search, setSearch] = useState("")
 
-  
- const filtered_products = cars.filter((item) => {
-  const name = (item.car_name || "").toLowerCase()
-  const desc = (item.car_description || "").toLowerCase()
-  const term = (search || "").toLowerCase()
+  const user_id = localStorage.getItem("user_id")
 
-  return name.includes(term) || desc.includes(term)
-})
+  const filtered_products = cars.filter((item) => {
+    const name = (item.car_name || "").toLowerCase()
+    const desc = (item.car_description || "").toLowerCase()
+    const term = (search || "").toLowerCase()
+
+    return name.includes(term) || desc.includes(term)
+  })
 
   const getbookings = async () => {
     setLoading("Please wait...")
     try {
-      const response = await axios.get("http://127.0.0.1:5000/api/getbookings")
-      setCars(response.data)
+      const response = await axios.get("http://linushiggs.alwaysdata.net/api/getbookings")
+
+      // ONLY THIS USER'S BOOKINGS
+      const userBookings = response.data.filter(
+        (booking) => String(booking.user_id) === String(user_id)
+      )
+
+      setCars(userBookings)
       setLoading("")
     } catch (error) {
       console.log(error)
@@ -35,14 +41,12 @@ const Getbookings = () => {
     getbookings()
   }, [])
 
-  const imagepath = "http://127.0.0.1:5000/static/images/"
+  const imagepath = "http://linushiggs.alwaysdata.net/static/images/"
 
   return (
     <div className="container py-5">
-      <Navbar search={search}  setSearch={setSearch}/>
-      
+      <Navbar search={search} setSearch={setSearch} />
 
-      {/* Header */}
       <h2 className="text-center fw-bold mb-4">
         📅 My Bookings
       </h2>
@@ -53,10 +57,8 @@ const Getbookings = () => {
       <div className="row">
         {filtered_products.map((booking, index) => (
           <div className="col-md-4 mb-4" key={index}>
-
             <div className="card car-card h-100 border-0 d-flex flex-column">
 
-              {/* Image */}
               <div className="image-container">
                 <img
                   src={imagepath + booking.car_image}
@@ -65,16 +67,15 @@ const Getbookings = () => {
                 />
               </div>
 
-              {/* Body */}
               <div className="card-body flex-grow-1">
                 <h5 className="fw-bold">{booking.car_name}</h5>
 
-               <p className="small mb-1">
-                 📅 <span style={{ color: "#94a3b8" }}>Start:</span> {booking.start_date}
+                <p className="small mb-1">
+                  📅 <span style={{ color: "#94a3b8" }}>Start:</span> {booking.start_date}
                 </p>
 
                 <p className="small mb-2">
-              📅 <span style={{ color: "#94a3b8" }}>End:</span> {booking.end_date}
+                  📅 <span style={{ color: "#94a3b8" }}>End:</span> {booking.end_date}
                 </p>
 
                 <h6 className="text-primary fw-bold">
@@ -82,7 +83,6 @@ const Getbookings = () => {
                 </h6>
               </div>
 
-              {/* Footer */}
               <div className="card-footer bg-white border-0 mt-auto">
                 <button className="btn btn-outline-primary w-100">
                   📄 View Booking
@@ -90,7 +90,6 @@ const Getbookings = () => {
               </div>
 
             </div>
-
           </div>
         ))}
       </div>
