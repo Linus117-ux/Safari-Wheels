@@ -55,7 +55,7 @@ const [sort, setSort] = useState("");
   const getcars = async () => {
     setLoading("Please wait");
     try {
-      const response = await axios.get("http://linushiggs.alwaysdata.net/api/getproducts");
+      const response = await axios.get("https://linushiggs.alwaysdata.net/api/getproducts");
       setCars(response.data);
       setLoading("");
     } catch (error) {
@@ -71,7 +71,7 @@ const [sort, setSort] = useState("");
       getcars();
     }
   }, [user, navigate]);
-  const imagepath = "http://linushiggs.alwaysdata.net/static/images/";
+  const imagepath = "https://linushiggs.alwaysdata.net/static/images/";
 
   return (
     <div className="container py-5">

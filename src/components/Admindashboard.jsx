@@ -14,9 +14,9 @@ const AdminDashboard = () => {
 
     try {
       const [bookingsRes, carsRes, usersRes] = await Promise.all([
-        axios.get("http://linushiggs.alwaysdata.net/api/getbookings"),
-        axios.get("http://linushiggs.alwaysdata.net/api/getcars"),
-        axios.get("http://linushiggs.alwaysdata.net/api/getusers"),
+        axios.get("https://linushiggs.alwaysdata.net/api/getbookings"),
+        axios.get("https://linushiggs.alwaysdata.net/api/getcars"),
+        axios.get("https://linushiggs.alwaysdata.net/api/getusers"),
       ])
 
       setBookings(bookingsRes.data)

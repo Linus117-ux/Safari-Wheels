@@ -28,7 +28,7 @@ const Signup = () => {
         formdata.append("password" , password)
         formdata.append("phone" , phone)
         try {
-          const response = await axios.post("http://linushiggs.alwaysdata.net/api/signup" , formdata)
+          const response = await axios.post("https://linushiggs.alwaysdata.net/api/signup" , formdata)
           setSuccess(response.data.message)
           setLoading("")
         } catch (error) {

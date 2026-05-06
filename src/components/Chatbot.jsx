@@ -20,7 +20,7 @@ const Chatbot = () => {
     setChat((prev) => [...prev, userMsg]);
 
     try {
-      const res = await fetch("http://linushiggs.alwaysdata.net/chat", {
+      const res = await fetch("https://linushiggs.alwaysdata.net/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message }),

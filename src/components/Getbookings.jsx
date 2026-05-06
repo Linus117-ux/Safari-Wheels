@@ -22,7 +22,7 @@ const Getbookings = () => {
   setLoading("Please wait...")
 
   try {
-    const response = await axios.get("http://linushiggs.alwaysdata.net/api/getbookings")
+    const response = await axios.get("https://linushiggs.alwaysdata.net/api/getbookings")
 
     const userBookings = response.data.filter(
       (booking) => String(booking.user_id) === String(user_id)
@@ -41,7 +41,7 @@ const Getbookings = () => {
     getbookings()
   }, [getbookings])
 
-  const imagepath = "http://linushiggs.alwaysdata.net/static/images/"
+  const imagepath = "https://linushiggs.alwaysdata.net/static/images/"
 
   return (
     <div className="container py-5">

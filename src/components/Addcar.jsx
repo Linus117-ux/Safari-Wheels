@@ -38,7 +38,7 @@ const Addcar = () => {
     formdata.append("car_image", car_image)
 
     try {
-      const response = await axios.post("http://linushiggs.alwaysdata.net/api/addcar", formdata)
+      const response = await axios.post("https://linushiggs.alwaysdata.net/api/addcar", formdata)
       setSuccess(response.data.message)
       setLoading("")
 

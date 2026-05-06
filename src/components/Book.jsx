@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom"
 
 const Book = () => {
   const { car } = useLocation().state || {}
-  const imagepath = "http://linushiggs.alwaysdata.net/static/images/"
+  const imagepath = "https://linushiggs.alwaysdata.net/static/images/"
 
   const [phone, setPhone] = useState("")
   const [startdate, setStartdate] = useState("")
@@ -43,7 +43,7 @@ const Book = () => {
     formdata.append("phone", phone)
 
     const res = await axios.post(
-      "http://linushiggs.alwaysdata.net/api/mpesa_payment",
+      "https://linushiggs.alwaysdata.net/api/mpesa_payment",
       formdata
     )
 
