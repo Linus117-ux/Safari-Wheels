@@ -168,7 +168,7 @@ const [sort, setSort] = useState("");
                 <button  className="btn w-100 veiw-btn"
   onClick={() => navigate("/chatbot", { state: { car } })}
                     >
-                  👁 View Details
+                  👁 Talk to chatbot"car details"
                 </button>
               </div>
             </div>

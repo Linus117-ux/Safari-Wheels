@@ -18,7 +18,6 @@ import Getbookings from './components/Getbookings';
 import Addcar from './components/Addcar';
 import Chatbot from './components/Chatbot';
 import Mainnav from './components/Mainnav';
-import ProtectedRoute from './components/ProtectedRoute';
 import AdminDashboard from './components/Admindashboard';
 
 function App() {
@@ -45,7 +44,7 @@ function App() {
     <Route path='/test' element={<Testcomponent/>} />
     <Route path='/signin' element={<Signin/>}/>
     <Route path='/signup' element={<Signup/>}/>
-    <Route path='/getcar' element={  <ProtectedRoute> <Getcar /> </ProtectedRoute>}/>
+    <Route path='/getcar' element={  <Getcar /> }/>
     <Route path='/addcar' element={<Addcar/>}/>
     
     <Route path="/" element={<Dashboard />} />
