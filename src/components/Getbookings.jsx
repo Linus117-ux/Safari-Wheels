@@ -79,7 +79,7 @@ const Getbookings = () => {
                 </p>
 
                 <h6 className="text-primary fw-bold">
-                  Ksh {booking.total_price}
+                   {booking.total_price}$
                 </h6>
               </div>
 

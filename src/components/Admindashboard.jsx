@@ -47,7 +47,7 @@ const AdminDashboard = () => {
       {loading && <p className="text-warning text-center">{loading}</p>}
       {error && <p className="text-danger text-center">{error}</p>}
 
-      {/* STATS CARDS */}
+    
       <div className="row text-center mb-4">
 
         <div className="col-md-4 mb-3">
@@ -73,7 +73,6 @@ const AdminDashboard = () => {
 
       </div>
 
-      {/* RECENT BOOKINGS */}
       <h4 className="mb-3">📅 Recent Bookings</h4>
 
      <div className="table-responsive">

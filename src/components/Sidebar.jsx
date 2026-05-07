@@ -19,7 +19,7 @@ const Sidebar = () => {
 
         <h3>{open ? "🚗 SW" : "🚗"}</h3>
 
-        {/* ALWAYS VISIBLE */}
+       
         <Link to="/">
           <i className="bi bi-house"></i>
           {open && <span> Home</span>}
@@ -30,7 +30,7 @@ const Sidebar = () => {
           {open && <span> Cars</span>}
         </Link>
 
-        {/* ONLY WHEN LOGGED IN */}
+       
         {user && (
           <Link to="/getbookings">
             <i className="bi bi-calendar-check"></i>
@@ -38,7 +38,7 @@ const Sidebar = () => {
           </Link>
         )}
 
-        {/* ADMIN ONLY */}
+      
         {role === "admin" && (
           <>
             <Link to="/admin">
@@ -53,7 +53,7 @@ const Sidebar = () => {
           </>
         )}
 
-        {/* NOT LOGGED IN */}
+       
         {!user && (
           <>
             <Link to="/signin">

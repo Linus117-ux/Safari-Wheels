@@ -53,7 +53,6 @@ const Navbar = ({ search, setSearch }) => {
 )}
             </ul>
 
-            {/* Search */}
             <form className="d-flex align-items-center me-3">
               <div className="input-group">
                 <input 
@@ -74,7 +73,7 @@ const Navbar = ({ search, setSearch }) => {
               </div>
             </form>
 
-            {/* 🔥 AUTH BUTTONS */}
+          
            <div className="d-flex align-items-center">
 
   {!user ? (

@@ -31,7 +31,7 @@ const Signin = () => {
     setSuccess(response.data.message);
     setLoading("");
 
-    // ✅ store correctly
+   
     localStorage.setItem("user_id", user.user_id);
     localStorage.setItem("email", user.email);
     localStorage.setItem("role", user.role);

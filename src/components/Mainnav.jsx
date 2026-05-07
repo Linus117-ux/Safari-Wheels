@@ -74,7 +74,7 @@ const Mainnav = () => {
     
                
     
-                {/* 🔥 AUTH BUTTONS */}
+            
                <div className="d-flex align-items-center">
     
       {!user ? (

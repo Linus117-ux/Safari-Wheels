@@ -70,7 +70,7 @@ Torque: ${c.torque}`
 
   return (
     <>
-      {/* Floating Button */}
+    
       <button
         onClick={() => setOpen(!open)}
         style={{
@@ -90,7 +90,7 @@ Torque: ${c.torque}`
         🤖
       </button>
 
-      {/* Chat Window */}
+      
       {open && (
         <div
           style={{
@@ -107,7 +107,7 @@ Torque: ${c.torque}`
             overflow: "hidden",
           }}
         >
-          {/* Messages */}
+      
          <div
   style={{
     flex: 1,
@@ -140,7 +140,7 @@ Torque: ${c.torque}`
     </div>
   ))}
 
-  {/* 👇 AUTO SCROLL TARGET (IMPORTANT) */}
+ 
   <div ref={chatEndRef} />
 </div>
 

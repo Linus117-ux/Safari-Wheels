@@ -48,7 +48,7 @@ const Dashboard = () => {
 
       <div className="row align-items-center">
 
-        {/* LEFT SIDE - IMAGE */}
+    
         <div className="col-md-6 mb-4">
           <img
             src="/images/about-car.png"
@@ -57,7 +57,6 @@ const Dashboard = () => {
           />
         </div>
 
-        {/* RIGHT SIDE - TEXT */}
         <div className="col-md-6">
           <h2 className="fw-bold mb-3">About Us</h2>
 
@@ -76,7 +75,7 @@ const Dashboard = () => {
 
 
         
-          {/* FEATURES */}
+        
           <div className="row mt-4">
             <div className="col-6 mb-3">
               <h6>🚗 Wide Range of Cars</h6>
@@ -251,7 +250,7 @@ const Dashboard = () => {
 
         <div className="row">
 
-          {/* BRAND */}
+         
           <div className="col-md-4 mb-4">
             <h4 className="fw-bold">
               <span className="text-primary">LINUS</span> ENTERPRISES
@@ -274,7 +273,6 @@ const Dashboard = () => {
                     releases.</p>
           </div>
 
-          {/* QUICK LINKS */}
           <div className="col-md-2 mb-4">
             <h6 className="fw-bold">Quick Links</h6>
             <ul className="list-unstyled">
@@ -284,7 +282,7 @@ const Dashboard = () => {
             </ul>
           </div>
 
-          {/* SERVICES */}
+     
           <div className="col-md-3 mb-4">
             <h6 className="fw-bold">Services</h6>
             <ul className="list-unstyled">
@@ -294,7 +292,7 @@ const Dashboard = () => {
             </ul>
           </div>
 
-          {/* CONTACT */}
+    
           <div className="col-md-3 mb-4">
             <h6 className="fw-bold">Contact Us</h6>
             <p className=" mb-1">📍 Nairobi, Kenya</p>
@@ -306,7 +304,6 @@ const Dashboard = () => {
 
         <hr className="border-secondary" />
 
-        {/* BOTTOM */}
         <div className="text-center">
           <p className="mb-0 text-white">
             © 2026 Safari Wheels | All Rights Reserved

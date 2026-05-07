@@ -15,7 +15,7 @@ const Addcar = () => {
   const [success, setSuccess] = useState("")
   const [error, setError] = useState("")
 
-  // 🔐 PROTECT ROUTE
+  
   useEffect(() => {
     const role = localStorage.getItem("role");
 

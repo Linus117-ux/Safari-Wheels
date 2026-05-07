@@ -15,9 +15,7 @@ const Book = () => {
   const [loading, setLoading] = useState("")
   const [error, setError] = useState("")
 
-  // =========================
-  // CALCULATE TOTAL PRICE
-  // =========================
+
   useEffect(() => {
     if (startdate && enddate && car) {
       const start = new Date(startdate)
@@ -34,9 +32,7 @@ const Book = () => {
     }
   }, [startdate, enddate, car])
 
-  // =========================
-  // MPESA PAYMENT REQUEST
-  // =========================
+
   const Mpesapayment = async (amount, phone) => {
     const formdata = new FormData()
     formdata.append("amount", amount)
@@ -50,9 +46,7 @@ const Book = () => {
     return res.data
   }
 
-  // =========================
-  // HANDLE BOOKING
-  // =========================
+
   const handlesubmit = async (e) => {
     e.preventDefault()
      const user_id = localStorage.getItem("user_id")
@@ -61,7 +55,7 @@ const Book = () => {
     setSuccess("")
     setLoading("")
 
-    // VALIDATIONS
+  
     if (!startdate || !enddate) {
       setError("Please select both dates")
       return
@@ -78,9 +72,6 @@ const Book = () => {
     }
 
     try {
-      // =========================
-      // 1. SAVE BOOKING FIRST (PENDING)
-      // =========================
       setLoading("Saving booking...")
 
       const formdata = new FormData()
@@ -92,23 +83,12 @@ const Book = () => {
       formdata.append("phone", phone)
       formdata.append("payment_status", "pending")
 
-      // const bookingRes = await axios.post(
-      //   "http://linushiggs.alwaysdata.net/api/bookings",
-      //   formdata
-      // )
 
-      // const bookingId = bookingRes.data.booking_id
 
-      // =========================
-      // 2. INITIATE PAYMENT
-      // =========================
       setLoading("Initiating M-Pesa payment...")
 
       await Mpesapayment(total, phone)
 
-      // =========================
-      // SUCCESS MESSAGE
-      // =========================
       setSuccess(
         "Booking saved successfully! Check your phone to complete payment."
       )
@@ -117,7 +97,7 @@ const Book = () => {
     } catch (error) {
       console.log(error)
 
-      // IMPORTANT: booking is still saved even if payment fails
+      
       setError(
         "Booking saved but payment failed or not completed."
       )
@@ -197,11 +177,11 @@ const Book = () => {
               </div>
 
               <h6 className="text-primary">
-                Ksh {car?.price_per_day} / day
+                 {car?.price_per_day} $/ day
               </h6>
 
               <h5 className="text-success">
-                Total: Ksh {total}
+                Total:  {total}$
               </h5>
 
               <input

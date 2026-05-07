@@ -28,17 +28,17 @@ const [sort, setSort] = useState("");
     const desc = (item.car_description || "").toLowerCase();
     const carBrand = (item.car_brand || "").toLowerCase();
 
-    // 🔍 search (name + description + brand)
+   
     const matchesSearch =
       name.includes(searchTerm) ||
       desc.includes(searchTerm) ||
       carBrand.includes(searchTerm);
 
-    // 🚗 brand filter (exact or partial match)
+  
     const matchesBrand =
       brandTerm === "" || carBrand.includes(brandTerm);
 
-    // 💰 price filter (safe conversion)
+   
     const price = Number(item.price_per_day);
 
     const matchesPrice =
@@ -138,7 +138,7 @@ const [sort, setSort] = useState("");
 </div>
 
       <div className="row mt-4">
-        {/* FIX 2: Map over 'filtered_products' instead of 'cars' */}
+      
         {filtered_products.map((car, index) => (
           <div className="col-md-4 mb-4" key={car.id || index}>
             <div className="card car-card h-100 border-0 d-flex flex-column">
