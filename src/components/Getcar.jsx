@@ -1,57 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import axios from "axios";
 import Chatbot from "./Chatbot";
-import Navbar from './Navbar';
 import { useNavigate } from "react-router-dom"
 
 const Getcar = () => {
   let navigate = useNavigate();
  
-  
   const [loading, setLoading] = useState("");
   const [cars, setCars] = useState([]);
   const [error, setError] = useState("");
-  const[search,setSearch]=useState("")
+  const [search, setSearch] = useState("")
   const user = localStorage.getItem("user_id");
   const [brand, setBrand] = useState("");
-const [minPrice, setMinPrice] = useState("");
-const [maxPrice, setMaxPrice] = useState("");
-const [sort, setSort] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
+  const [sort, setSort] = useState("");
   
+  const filtered_products = cars
+    .filter((item) => {
+      const searchTerm = (search || "").toLowerCase();
+      const brandTerm = (brand || "").toLowerCase();
+      const name = (item.car_name || "").toLowerCase();
+      const desc = (item.car_description || "").toLowerCase();
+      const carBrand = (item.car_brand || "").toLowerCase();
+     
+      const matchesSearch = name.includes(searchTerm) || desc.includes(searchTerm) || carBrand.includes(searchTerm);
+      const matchesBrand = brandTerm === "" || carBrand.includes(brandTerm);
+      const price = Number(item.price_per_day);
+      const matchesPrice = (!minPrice || price >= Number(minPrice)) && (!maxPrice || price <= Number(maxPrice));
+      return matchesSearch && matchesBrand && matchesPrice;
+    })
+    .sort((a, b) => {
+      if (sort === "low-high") return a.price_per_day - b.price_per_day;
+      if (sort === "high-low") return b.price_per_day - a.price_per_day;
+      return 0;
+    });
 
- const filtered_products = cars
-  .filter((item) => {
-    const searchTerm = (search || "").toLowerCase();
-    const brandTerm = (brand || "").toLowerCase();
-
-    const name = (item.car_name || "").toLowerCase();
-    const desc = (item.car_description || "").toLowerCase();
-    const carBrand = (item.car_brand || "").toLowerCase();
-
-   
-    const matchesSearch =
-      name.includes(searchTerm) ||
-      desc.includes(searchTerm) ||
-      carBrand.includes(searchTerm);
-
-  
-    const matchesBrand =
-      brandTerm === "" || carBrand.includes(brandTerm);
-
-   
-    const price = Number(item.price_per_day);
-
-    const matchesPrice =
-      (!minPrice || price >= Number(minPrice)) &&
-      (!maxPrice || price <= Number(maxPrice));
-
-    return matchesSearch && matchesBrand && matchesPrice;
-  })
-  .sort((a, b) => {
-    if (sort === "low-high") return a.price_per_day - b.price_per_day;
-    if (sort === "high-low") return b.price_per_day - a.price_per_day;
-    return 0;
-  });
   const getcars = async () => {
     setLoading("Please wait");
     try {
@@ -64,111 +48,241 @@ const [sort, setSort] = useState("");
     }
   };
 
-   useEffect(() => {
-  getcars();
-}, []);
+  useEffect(() => {
+    getcars();
+  }, []);
+
   const imagepath = "https://linushiggs.alwaysdata.net/static/images/";
 
   return (
     <div className="container py-5">
-      <Navbar search={search} setSearch={setSearch}/>
+      {/* Header Section */}
+      <div className="text-center mb-5">
+        <h1 className="display-4 fw-bold" style={{ 
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          marginBottom: "1rem"
+        }}>
+          🚗 Explore Our Premium Cars
+        </h1>
+        <p className="lead text-white-50">Find your perfect ride from our collection of luxury vehicles</p>
+      </div>
+
+      {/* Loading & Error Messages */}
+      {loading && (
+        <div className="text-center mb-4">
+          <div className="spinner-border text-primary" role="status" style={{ width: "3rem", height: "3rem" }}>
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="text-white-50 mt-2">{loading}</p>
+        </div>
+      )}
       
-      
-      
-      <h2 className="text-center fw-bold mb-4">🚗 Explore Our Cars</h2>
-      <p className="text-center text-info">{loading}</p>
-      <p className="text-center text-danger">{error}</p>
-      <div className="row mb-4">
-  
+      {error && (
+        <div className="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+          <i className="bi bi-exclamation-triangle-fill me-2"></i>
+          {error}
+          <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      )}
 
-  <div className="col-md-2">
-    <label htmlFor="" className='form-label fw-semibold'><i className="bi bi-lock me-2" style={{ color: "#3b82f6" }} ></i>Brand</label>
+      {/* Filters Section */}
+      <div className="card shadow-sm border-0 mb-5" style={{ borderRadius: "20px", background: "#1e293b" }}>
+        <div className="card-body p-4">
+          <div className="row g-3 align-items-end">
+            <div className="col-md-3">
+              <label className="form-label fw-semibold text-white">
+                <i className="bi bi-search me-2 text-primary"></i>Search
+              </label>
+              <input
+                className="form-control border-0 shadow-sm"
+                style={{ borderRadius: "12px", padding: "10px 15px", background: "#0f172a", color: "#e2e8f0", border: "1px solid #334155" }}
+                placeholder="Search by name, brand..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </div>
+          
+            <div className="col-md-2">
+              <label className="form-label fw-semibold text-white">
+                <i className="bi bi-tag me-2 text-primary"></i>Brand
+              </label>
+              <input
+                className="form-control border-0 shadow-sm"
+                style={{ borderRadius: "12px", padding: "10px 15px", background: "#0f172a", color: "#e2e8f0", border: "1px solid #334155" }}
+                placeholder="Filter by brand"
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
+              />
+            </div>
 
-    <input
-      className="form-control text-white"
-      placeholder="Brand"
-      value={brand}
-      onChange={(e) => setBrand(e.target.value)}
-    />
-  </div>
+            <div className="col-md-2">
+              <label className="form-label fw-semibold text-white">
+                <i className="bi bi-cash-stack me-2 text-primary"></i>Min Price
+              </label>
+              <input
+                type="number"
+                className="form-control border-0 shadow-sm"
+                style={{ borderRadius: "12px", padding: "10px 15px", background: "#0f172a", color: "#e2e8f0", border: "1px solid #334155" }}
+                placeholder="Min $"
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+              />
+            </div>
 
-  <div className="col-md-2">
-    <label htmlFor="" className='form-label fw-semibold'><i className="bi bi-cash-coin" style={{ color: "#3b82f6" }} ></i>Min Price</label>
+            <div className="col-md-2">
+              <label className="form-label fw-semibold text-white">
+                <i className="bi bi-wallet2 me-2 text-primary"></i>Max Price
+              </label>
+              <input
+                type="number"
+                className="form-control border-0 shadow-sm"
+                style={{ borderRadius: "12px", padding: "10px 15px", background: "#0f172a", color: "#e2e8f0", border: "1px solid #334155" }}
+                placeholder="Max $"
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+              />
+            </div>
 
-    <input
-      type="number"
-      className="form-control"
-      placeholder="Min Price"
-      value={minPrice}
-      onChange={(e) => setMinPrice(e.target.value)}
-    />
-  </div>
+            <div className="col-md-3">
+              <label className="form-label fw-semibold text-white">
+                <i className="bi bi-arrow-down-up me-2 text-primary"></i>Sort By
+              </label>
+              <select
+                className="form-select border-0 shadow-sm"
+                style={{ borderRadius: "12px", padding: "10px 15px", background: "#0f172a", color: "#e2e8f0", border: "1px solid #334155" }}
+                value={sort}
+                onChange={(e) => setSort(e.target.value)}
+              >
+                <option value="">Default</option>
+                <option value="low-high">Price: Low → High</option>
+                <option value="high-low">Price: High → Low</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <div className="col-md-2">
-    <label htmlFor="" className='form-label fw-semibold'><i className="bi bi-wallet2" style={{ color: "#3b82f6" }} ></i>Max Price</label>
-    <input
-      type="number"
-      className="form-control"
-      placeholder="Max Price"
-      value={maxPrice}
-      onChange={(e) => setMaxPrice(e.target.value)}
-    />
-    
-  </div>
-
-  <div className="col-md-3">
-    <label className="form-label">
-  <i className="bi bi-sort-numeric-down me-1"></i>
-  Sort By
-</label>
-    <select
-      className="form-control"
-      value={sort}
-      onChange={(e) => setSort(e.target.value)}
-    >
-      <option value="">Select</option>
-      <option value="low-high">Price: Low → High</option>
-      <option value="high-low">Price: High → Low</option>
-    </select>
-  </div>
-</div>
-
-      <div className="row mt-4">
-      
+      {/* Cars Grid */}
+      <div className="row g-4 mt-2">
         {filtered_products.map((car, index) => (
-          <div className="col-md-4 mb-4" key={car.id || index}>
-            <div className="card car-card h-100 border-0 d-flex flex-column">
-              <div className="image-container">
+          <div className="col-md-6 col-lg-4" key={car.id || index}>
+            <div className="card h-100 border-0 shadow-lg" style={{ 
+              borderRadius: "20px", 
+              overflow: "hidden",
+              background: "#1e293b",
+              transition: "transform 0.3s ease, box-shadow 0.3s ease",
+              cursor: "pointer"
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-10px)";
+              e.currentTarget.style.boxShadow = "0 20px 40px rgba(0,0,0,0.3)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 1rem 3rem rgba(0,0,0,0.2)";
+            }}>
+              
+              {/* Image Container */}
+              <div className="position-relative overflow-hidden" style={{ height: "240px" }}>
                 <img
                   src={imagepath + car.car_image}
                   alt={car.car_name}
-                  className="card-img-top"
+                  className="w-100 h-100"
+                  style={{ 
+                    objectFit: "cover",
+                    transition: "transform 0.5s ease"
+                  }}
+                  onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.1)"}
+                  onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"}
                 />
+                <div className="position-absolute top-0 end-0 m-3">
+                  <span className="badge bg-primary rounded-pill px-3 py-2 shadow-sm">
+                    <i className="bi bi-star-fill me-1"></i> Featured
+                  </span>
+                </div>
               </div>
-              <div className="card-body flex-grow-1">
-                <h5 className="fw-bold">{car.car_name}</h5>
-                <p className="text-white small">{car.car_description || "No description available"}</p>
-                <h6 className="text-primary fw-bold">
-                   {car.price_per_day} $/ day
-                </h6>
+
+              {/* Card Body - Only car description, no fake features */}
+              <div className="card-body p-4" style={{ background: "#1e293b" }}>
+                <h4 className="card-title fw-bold mb-2" style={{ color: "#f1f5f9" }}>
+                  {car.car_name}
+                </h4>
+                <p className="text-primary mb-3" style={{ fontSize: "0.9rem" }}>
+                  <i className="bi bi-tag me-1"></i>
+                  {car.car_brand || "Premium Vehicle"}
+                </p>
+                
+                {/* Only real car description */}
+                <p className="card-text mb-3" style={{ color: "#cbd5e1", fontSize: "0.9rem", lineHeight: "1.5" }}>
+                  {car.car_description || "Experience luxury and comfort with this premium vehicle. Perfect for any occasion."}
+                </p>
+                
+                {/* Price Tag */}
+                <div className="d-flex align-items-baseline mb-3">
+                  <span className="display-6 fw-bold text-primary">${car.price_per_day}</span>
+                  <span className="text-white-50 ms-2">/ day</span>
+                </div>
               </div>
-              <div className="card-footer bg-white border-0 mt-auto">
+
+              {/* Card Footer */}
+              <div className="card-footer bg-transparent border-0 p-4 pt-0" style={{ background: "#1e293b" }}>
                 <button 
-                  className="btn btn-primary w-100 mb-2" 
-                 onClick={() => {
-  if (!user) {
-    navigate("/signin");
-  } else {
-    navigate("/book", { state: { car } });
-  }
-}}
+                  className="btn btn-primary w-100 mb-2 fw-semibold py-2"
+                  style={{ 
+                    borderRadius: "12px",
+                    transition: "all 0.3s ease"
+                  }}
+                  onClick={() => {
+                    if (!user) {
+                      navigate("/signin");
+                    } else {
+                      navigate("/book", { state: { car } });
+                    }
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-2px)";
+                    e.currentTarget.style.boxShadow = "0 5px 15px rgba(13,110,253,0.3)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "none";
+                  }}
                 >
-                  🚗 Book Now
+                  <i className="bi bi-calendar-check me-2"></i>
+                  Book Now
                 </button>
-                <button  className="btn w-100 veiw-btn"
-  onClick={() => navigate("/chatbot", { state: { car } })}
-                    >
-                  👁 Talk to chatbot"car details"
+                
+                <button
+                  className="btn w-100 py-2"
+                  style={{ 
+                    borderRadius: "12px",
+                    transition: "all 0.3s ease",
+                    background: "rgba(13, 110, 253, 0.1)",
+                    color: "#3b82f6",
+                    border: "1px solid rgba(59, 130, 246, 0.3)"
+                  }}
+                  onClick={() => {
+                    window.dispatchEvent(
+                      new CustomEvent("openChatbot", {
+                        detail: {
+                          message: `Tell me about ${car.car_brand} ${car.car_name}`
+                        }
+                      })
+                    )
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = "rgba(13, 110, 253, 0.2)";
+                    e.currentTarget.style.border = "1px solid #3b82f6";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "rgba(13, 110, 253, 0.1)";
+                    e.currentTarget.style.border = "1px solid rgba(59, 130, 246, 0.3)";
+                  }}
+                >
+                  <i className="bi bi-robot me-2"></i>
+                  Chat with Assistant
                 </button>
               </div>
             </div>
@@ -176,15 +290,81 @@ const [sort, setSort] = useState("");
         ))}
       </div>
       
-      {/* Show message if no cars match search */}
+      {/* No Results Message */}
       {filtered_products.length === 0 && !loading && (
-        <p className="text-center">No cars found matching "{search}"</p>
+        <div className="text-center py-5 mt-4">
+          <i className="bi bi-emoji-frown display-1 text-white-50"></i>
+          <h3 className="mt-3 text-white">No cars found</h3>
+          <p className="text-white-50">Try adjusting your search or filter criteria</p>
+          <button 
+            className="btn btn-primary mt-2"
+            onClick={() => {
+              setSearch("");
+              setBrand("");
+              setMinPrice("");
+              setMaxPrice("");
+              setSort("");
+            }}
+          >
+            <i className="bi bi-arrow-repeat me-2"></i>
+            Clear All Filters
+          </button>
+        </div>
       )}
 
       <Chatbot />
+
+      {/* Custom CSS Styles */}
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .card {
+          animation: fadeIn 0.6s ease-out;
+          animation-fill-mode: both;
+        }
+        
+        .card:nth-child(n) {
+          animation-delay: calc(0.1s * var(--index, 0));
+        }
+        
+        .form-control:focus, .form-select:focus {
+          box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+          border-color: #3b82f6;
+        }
+        
+        .form-control::placeholder {
+          color: #64748b;
+        }
+        
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+          background: #0f172a;
+          border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+          background: #334155;
+          border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+          background: #475569;
+        }
+      `}</style>
     </div>
   );
 }
 
-
-export default Getcar
+export default Getcar;

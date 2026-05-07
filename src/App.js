@@ -44,7 +44,7 @@ function App() {
     <Route path='/test' element={<Testcomponent/>} />
     <Route path='/signin' element={<Signin/>}/>
     <Route path='/signup' element={<Signup/>}/>
-    <Route path='/getcar' element={  <Getcar /> }/>
+    <Route path="/getcar" element={<><Mainnav /><Getcar /></>} />
     <Route path='/addcar' element={<Addcar/>}/>
     
     <Route path="/" element={<Dashboard />} />

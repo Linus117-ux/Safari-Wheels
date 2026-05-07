@@ -16,7 +16,7 @@ const Mainnav = () => {
   return (
      <div className="row">
           <nav className="navbar navbar-expand-lg navbar-dark sticky-top border-bottom border-secondary py-3 shadow-sm">
-            <div className="container">
+           <div className="container" style={{ paddingLeft: window.innerWidth >= 768 ? "70px" : "16px" }}>
     
               {/* Brand */}
               <Link className="navbar-brand d-flex align-items-center" to="/">
