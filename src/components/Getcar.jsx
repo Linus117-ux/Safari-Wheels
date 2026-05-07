@@ -65,12 +65,8 @@ const [sort, setSort] = useState("");
   };
 
    useEffect(() => {
-    if (!user) {
-      navigate("/signin");
-    }else {
-      getcars();
-    }
-  }, [user, navigate]);
+  getcars();
+}, []);
   const imagepath = "https://linushiggs.alwaysdata.net/static/images/";
 
   return (
@@ -159,7 +155,13 @@ const [sort, setSort] = useState("");
               <div className="card-footer bg-white border-0 mt-auto">
                 <button 
                   className="btn btn-primary w-100 mb-2" 
-                  onClick={() => navigate("/book", { state: { car } })}
+                 onClick={() => {
+  if (!user) {
+    navigate("/signin");
+  } else {
+    navigate("/book", { state: { car } });
+  }
+}}
                 >
                   🚗 Book Now
                 </button>

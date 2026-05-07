@@ -22,28 +22,7 @@ const Dashboard = () => {
         </button>
       </div>
 
-      <div className=" py-5 text-center">
-  <div className="container">
-    <h2 className="fw-bold mb-4">Trusted by Drivers</h2>
-
-    <div className="row">
-      <div className="col-md-4">
-        <h3>500+</h3>
-        <p>Bookings</p>
-      </div>
-
-      <div className="col-md-4">
-        <h3>50+</h3>
-        <p>Cars Available</p>
-      </div>
-
-      <div className="col-md-4">
-        <h3>100%</h3>
-        <p>Satisfied Clients</p>
-      </div>
-    </div>
-  </div>
-</div>
+     
 
 
       <div className="row align-items-center">
