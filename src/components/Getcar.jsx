@@ -153,7 +153,7 @@ const [sort, setSort] = useState("");
                 <h5 className="fw-bold">{car.car_name}</h5>
                 <p className="text-white small">{car.car_description || "No description available"}</p>
                 <h6 className="text-primary fw-bold">
-                  Ksh {car.price_per_day} / day
+                   {car.price_per_day} $/ day
                 </h6>
               </div>
               <div className="card-footer bg-white border-0 mt-auto">
