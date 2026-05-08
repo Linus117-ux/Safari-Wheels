@@ -19,6 +19,7 @@ import Addcar from './components/Addcar';
 import Chatbot from './components/Chatbot';
 import Mainnav from './components/Mainnav';
 import AdminDashboard from './components/Admindashboard';
+import Users from './components/Users';
 
 function App() {
    
@@ -53,6 +54,7 @@ function App() {
    <Route path='/chatbot' element={<Chatbot />} />
    <Route path='/Mainnav' element={<Mainnav />} />
    <Route path='/admin' element={<AdminDashboard />} />
+   <Route path='/users' element={<Users />} />
    </Routes>
 </div>
    </div>

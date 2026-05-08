@@ -37,7 +37,7 @@ const Signin = () => {
     localStorage.setItem("role", user.role);
     localStorage.setItem("user_name", user.username);
 
-    setTimeout(() => {
+    setTimeout(() => {  // After a successful login, wait for 1 second to show the success message, then navigate to the home page. This provides a better user experience by giving users feedback that their login was successful before redirecting them to the main page of the application.
       navigate("/");
     }, 1000);
 

@@ -34,11 +34,13 @@ const Getbookings = () => {
 
   /* ── Cancel booking ── */
   const handleCancel = async (bookingId) => {
-    if (!window.confirm("Cancel this booking?")) return
+    if (!window.confirm("Cancel this booking?")) return // Simple confirmation dialog before cancelling a booking. If the user confirms, it proceeds to call the API to cancel the booking and updates the UI accordingly.
     setCancelling(bookingId)
     try {
       await axios.delete(`${BASE}/api/cancelbooking/${bookingId}`)
-      setCars((prev) => prev.filter((b) => b.id !== bookingId))
+     setCars((prev) =>
+  prev.filter((b) => b.bookings_id !== bookingId) // Optimistically update the UI by removing the cancelled booking from the list without needing to refetch all bookings from the server. This provides a smoother user experience by immediately reflecting the cancellation in the UI.
+)
     } catch (err) {
       alert("Could not cancel booking. Please try again.")
     } finally {
@@ -49,15 +51,15 @@ const Getbookings = () => {
   /* ── Helpers ── */
   const imagepath = `${BASE}/static/images/`
 
-  const getDuration = (start, end) => {
-    if (!start || !end) return null
+  const getDuration = (start, end) => {  // Calculates the duration of a booking in days based on the start and end dates. If either date is missing, it returns null. Otherwise, it computes the difference in milliseconds, converts it to days, and returns the number of days if it's greater than 0, or null if the duration is invalid (e.g., end date before start date).
+    if (!start || !end) return null // If either start or end date is missing, we cannot calculate duration, so return null
     const days = Math.ceil(
-      (new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24)
+      (new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24) // converts milliseconds to days
     )
     return days > 0 ? days : null
   }
 
-  const getStatus = (start, end) => {
+  const getStatus = (start, end) => {  // Determines the status of a booking based on the current date and the booking's start and end dates. Returns an object with a label and color for styling.
     const now   = new Date()
     const sDate = new Date(start)
     const eDate = new Date(end)
@@ -170,10 +172,10 @@ const Getbookings = () => {
         {filtered.map((booking) => {
           const status   = getStatus(booking.start_date, booking.end_date)
           const duration = getDuration(booking.start_date, booking.end_date)
-          const isCancel = cancelling === booking.id
+          const isCancel = cancelling === booking.bookings_id
 
           return (
-            <div className="col-md-4 mb-4" key={booking.id}>
+            <div className="col-md-4 mb-4" key={booking.bookings_id}>
               <div className="card car-card h-100 border-0 d-flex flex-column"
                    style={{ background: "#1e293b", borderRadius: 18,
                             boxShadow: "0 4px 20px rgba(0,0,0,0.4)" }}>
@@ -237,30 +239,57 @@ const Getbookings = () => {
                 </div>
 
                 {/* Footer */}
-                <div className="card-footer border-0 mt-auto px-3 pb-3 pt-2"
-                     style={{ background: "transparent" }}>
-                  <div className="d-flex gap-2">
-                    <button className="btn btn-primary flex-grow-1"
-                            style={{ borderRadius: 10 }}>
-                      📄 View Details
-                    </button>
-
-                    {status.label !== "Completed" && (
-                      <button
-                        className="btn btn-outline-danger"
-                        style={{ borderRadius: 10, minWidth: 44 }}
-                        onClick={() => handleCancel(booking.id)}
-                        disabled={isCancel}
-                        title="Cancel booking"
-                      >
-                        {isCancel
-                          ? <span className="spinner-border spinner-border-sm" />
-                          : <i className="bi bi-x-lg"></i>
-                        }
-                      </button>
-                    )}
-                  </div>
-                </div>
+               <div className="card-footer border-0 mt-auto px-3 pb-3 pt-2"
+     style={{ background: "transparent" }}>
+  <div className="d-flex gap-2">
+    {status.label !== "Completed" && (
+      <button
+        className="btn w-100 fw-semibold py-2"
+        style={{ 
+          borderRadius: 12,
+          minWidth: 44,
+          transition: "all 0.3s ease",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "8px",
+          fontSize: "14px",
+          background: isCancel ? "#6c757d" : "linear-gradient(135deg, #dc2626 0%, #b91c1c 100%)",
+          border: "none",
+          color: "white",
+          cursor: isCancel ? "not-allowed" : "pointer",
+          opacity: isCancel ? 0.7 : 1,
+          boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
+        }}
+        onClick={() => handleCancel(booking.bookings_id)}
+        disabled={isCancel}
+        title="Cancel booking"
+        onMouseEnter={(e) => {
+          if (!isCancel) {
+            e.currentTarget.style.transform = "translateY(-2px)";
+            e.currentTarget.style.boxShadow = "0 6px 16px rgba(220, 38, 38, 0.3)";
+          }
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "translateY(0)";
+          e.currentTarget.style.boxShadow = "0 2px 4px rgba(0,0,0,0.1)";
+        }}
+      >
+        {isCancel ? (
+          <>
+            <span className="spinner-border spinner-border-sm" style={{ width: "1rem", height: "1rem" }} />
+            <span>Cancelling...</span>
+          </>
+        ) : (
+          <>
+            <i className="bi bi-trash3 fs-5"></i>
+            <span>Cancel Booking</span>
+          </>
+        )}
+      </button>
+    )}
+  </div>
+</div>
 
               </div>
             </div>

@@ -16,19 +16,15 @@ const Chatbot = () => {
 
   const chatEndRef = useRef(null);
 
-  // =========================
-  // AUTO SCROLL
-  // =========================
-  useEffect(() => {
+
+  useEffect(() => {// Scroll to bottom whenever chat or typing status changes to the end of the chat window 
     chatEndRef.current?.scrollIntoView({
       behavior: "smooth",
     });
   }, [chat, typing]);
 
-  // =========================
-  // SEND TO API FUNCTION
-  // =========================
-  const fetchBotReply = async (msg) => {
+
+  const fetchBotReply = async (msg) => {  // Function to send user message to the backend API and fetch the bot's reply
     try {
       setTyping(true);
 
@@ -50,12 +46,11 @@ const Chatbot = () => {
       let botText = "";
 
       // CAR DATA
-      if (data.type === "cars") {
+      if (data.type === "cars") {  // If the response type is 'cars', format the reply to display car details in a user-friendly way.
         botText = data.reply
           .map(
             (c) => `
 🚗 ${c.company} ${c.car_name}
-
 ⚡ Engine: ${c.engine}
 🏁 Power: ${c.horsepower}
 🚀 Top Speed: ${c.top_speed}
@@ -67,12 +62,12 @@ const Chatbot = () => {
 💰 Price: ${c.price}
 `
           )
-          .join("\n━━━━━━━━━━━━━━\n");
+          .join("\n━━━━━━━━━━━━━━\n");// Separate multiple cars with a line for better readability
       } else {
         botText = data.reply;
       }
 
-      setChat((prev) => [
+      setChat((prev) => [ // Add the bot's reply to the chat history
         ...prev,
         {
           sender: "bot",
@@ -80,7 +75,7 @@ const Chatbot = () => {
         },
       ]);
     } catch (error) {
-      setChat((prev) => [
+      setChat((prev) => [ // In case of an error (e.g., network issues, server errors), add a generic error message to the chat to inform the user that something went wrong.
         ...prev,
         {
           sender: "bot",
@@ -92,16 +87,14 @@ const Chatbot = () => {
     }
   };
 
-  // =========================
-  // AUTO OPEN CHATBOT EVENT
-  // =========================
-  useEffect(() => {
+  
+  useEffect(() => {  // Listen for a custom event 'openChatbot' that can be dispatched from anywhere in the app to automatically open the chatbot and send a message. This allows other components (like car details or booking pages) to trigger the chatbot with specific questions or information without the user having to manually open it first.
     const handleOpenChatbot = async (event) => {
-      if (!event.detail || !event.detail.message) return;
+      if (!event.detail || !event.detail.message) return; // Ensure the event has the expected structure before proceeding to prevent errors if the event is dispatched without the necessary data.
 
-      const autoMessage = event.detail.message;
+      const autoMessage = event.detail.message; // The message that will be sent to the chatbot when the event is triggered. This allows for dynamic messages to be sent based on the context of where the event was dispatched (e.g., a specific car page could send a message like "Tell me more about the Tesla Model S").
 
-      setOpen(true);
+      setOpen(true); // Open the chatbot window when the event is received
 
       // Add user message
       setChat((prev) => [
@@ -116,7 +109,7 @@ const Chatbot = () => {
       await fetchBotReply(autoMessage);
     };
 
-    window.addEventListener(
+    window.addEventListener( // Listen for the custom 'openChatbot' event on the window object. This allows any component in the app to dispatch this event to trigger the chatbot.
       "openChatbot",
       handleOpenChatbot
     );
@@ -129,22 +122,18 @@ const Chatbot = () => {
     };
   }, []);
 
-  // =========================
-  // ENTER KEY
-  // =========================
-  const handleKeyPress = (e) => {
+ 
+  const handleKeyPress = (e) => { // Allow sending message by pressing Enter key for better user experience, in addition to clicking the send button.
     if (e.key === "Enter") {
       sendMessage();
     }
   };
 
-  // =========================
-  // SEND MESSAGE
-  // =========================
-  const sendMessage = async () => {
+ 
+  const sendMessage = async () => { // Function to handle sending a message when the user clicks the send button or presses Enter. It adds the user's message to the chat history and then calls the function to fetch the bot's reply.
     if (!message.trim()) return;
 
-    const currentMessage = message;
+    const currentMessage = message; // Store the current message in a variable to ensure we send the correct message to the backend, even if the user types something new before the async operation completes.
 
     // Add user message
     setChat((prev) => [
@@ -227,7 +216,7 @@ const Chatbot = () => {
               background: "#0f172a",
             }}
           >
-            {chat.map((c, i) => (
+            {chat.map((c, i) => (  // Render each message in the chat history. User messages are aligned to the right and bot messages to the left, with different background colors for visual distinction. The message text is styled for readability, and the container allows for multiline messages with proper spacing.
               <div
                 key={i}
                 style={{
@@ -267,7 +256,7 @@ const Chatbot = () => {
             ))}
 
             {/* TYPING */}
-            {typing && (
+            {typing && (  // Show a "Typing..." indicator when the bot is generating a reply to inform the user that a response is on the way, enhancing the interactivity and responsiveness of the chatbot experience.
               <div
                 style={{
                   color: "#94a3b8",

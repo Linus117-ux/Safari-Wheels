@@ -448,3 +448,33 @@ th, td {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
+
+/* Smooth animations for modals */
+.modal.show.d-block {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Table hover effect */
+.table-hover tbody tr:hover {
+  background-color: rgba(102, 126, 234, 0.05);
+  transition: background-color 0.2s ease;
+}
+
+/* Card hover effect */
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1) !important;
+}

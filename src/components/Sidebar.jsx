@@ -5,17 +5,17 @@ const Sidebar = () => {
   // Sidebar closed by default
   const [open, setOpen] = useState(false);
 
-  const user = localStorage.getItem("user_id");
-  const role = localStorage.getItem("role");
+  const user = localStorage.getItem("user_id");  // Retrieve the user's ID from localStorage to determine if a user is logged in. This is used to conditionally render certain navigation options and the user dropdown menu.
+  const role = localStorage.getItem("role");  // Retrieve the user's role from localStorage to determine if the user is an admin. This allows the component to conditionally render admin-specific links in the sidebar, such as the "Add car" link and admin dashboard access.
 
   const location = useLocation();
 
   // Auto close on mobile when route changes
-  useEffect(() => {
+  useEffect(() => {  // Whenever the route changes, check if the screen width is less than 768 pixels (indicating a mobile device). If it is, automatically close the sidebar by setting the 'open' state to false. This ensures that the sidebar does not remain open on smaller screens when navigating to different pages, improving the user experience on mobile devices.
     if (window.innerWidth < 768) {
       setOpen(false);
     }
-  }, [location]);
+  }, [location]); // The dependency array includes 'location' to trigger this effect whenever the route changes, ensuring the sidebar behaves responsively across different screen sizes.
 
   return (
     <>

@@ -10,25 +10,28 @@ const Getcar = () => {
   const [cars, setCars] = useState([]);
   const [error, setError] = useState("");
   const [search, setSearch] = useState("")
-  const user = localStorage.getItem("user_id");
+  const user = localStorage.getItem("user_id"); 
+  // {// Gets logged-in user from browser storage.}
   const [brand, setBrand] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sort, setSort] = useState("");
   
-  const filtered_products = cars
+  // Creates filtered and sorted cars list.
+  const filtered_products = cars 
     .filter((item) => {
-      const searchTerm = (search || "").toLowerCase();
+      // Avoids error if search is null/undefined. Converts to lowercase for case-insensitive search.
+      const searchTerm = (search || "").toLowerCase(); 
       const brandTerm = (brand || "").toLowerCase();
       const name = (item.car_name || "").toLowerCase();
       const desc = (item.car_description || "").toLowerCase();
       const carBrand = (item.car_brand || "").toLowerCase();
      
-      const matchesSearch = name.includes(searchTerm) || desc.includes(searchTerm) || carBrand.includes(searchTerm);
-      const matchesBrand = brandTerm === "" || carBrand.includes(brandTerm);
-      const price = Number(item.price_per_day);
-      const matchesPrice = (!minPrice || price >= Number(minPrice)) && (!maxPrice || price <= Number(maxPrice));
-      return matchesSearch && matchesBrand && matchesPrice;
+      const matchesSearch = name.includes(searchTerm) || desc.includes(searchTerm) || carBrand.includes(searchTerm);  // Checks if search term is in name, description, or brand.
+      const matchesBrand = brandTerm === "" || carBrand.includes(brandTerm); // If brand filter is empty, matches all. Otherwise checks if car brand includes the filter term.
+      const price = Number(item.price_per_day); // Converts price to number for comparison. Assumes price_per_day is a valid number string.
+      const matchesPrice = (!minPrice || price >= Number(minPrice)) && (!maxPrice || price <= Number(maxPrice));//
+      return matchesSearch && matchesBrand && matchesPrice; // Only includes cars that match all filters.
     })
     .sort((a, b) => {
       if (sort === "low-high") return a.price_per_day - b.price_per_day;
@@ -84,10 +87,11 @@ const Getcar = () => {
           <i className="bi bi-exclamation-triangle-fill me-2"></i>
           {error}
           <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
+        </div> // Displays error message if loading cars fails.
       )}
 
       {/* Filters Section */}
+              {/* // Search input for filtering cars by name, brand, or description. Updates 'search' state on change. */}
       <div className="card shadow-sm border-0 mb-5" style={{ borderRadius: "20px", background: "#1e293b" }}>
         <div className="card-body p-4">
           <div className="row g-3 align-items-end">
@@ -102,8 +106,9 @@ const Getcar = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-            </div>
+            </div> 
           
+              {/* // Input for filtering cars by brand. Updates 'brand' state on change. */}
             <div className="col-md-2">
               <label className="form-label fw-semibold text-white">
                 <i className="bi bi-tag me-2 text-primary"></i>Brand
@@ -115,8 +120,9 @@ const Getcar = () => {
                 value={brand}
                 onChange={(e) => setBrand(e.target.value)}
               />
-            </div>
+            </div> 
 
+              {/* // Input for filtering cars by minimum price. Updates 'minPrice' state on change. */}
             <div className="col-md-2">
               <label className="form-label fw-semibold text-white">
                 <i className="bi bi-cash-stack me-2 text-primary"></i>Min Price
@@ -129,7 +135,7 @@ const Getcar = () => {
                 value={minPrice}
                 onChange={(e) => setMinPrice(e.target.value)}
               />
-            </div>
+            </div> 
 
             <div className="col-md-2">
               <label className="form-label fw-semibold text-white">
@@ -143,12 +149,14 @@ const Getcar = () => {
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}
               />
-            </div>
+            </div> 
+            {/* // Input for filtering cars by maximum price. Updates 'maxPrice' state on change. */}
 
             <div className="col-md-3">
               <label className="form-label fw-semibold text-white">
                 <i className="bi bi-arrow-down-up me-2 text-primary"></i>Sort By
               </label>
+              {/* // Dropdown for sorting cars by price. Updates 'sort' state on change. */}
               <select
                 className="form-select border-0 shadow-sm"
                 style={{ borderRadius: "12px", padding: "10px 15px", background: "#0f172a", color: "#e2e8f0", border: "1px solid #334155" }}
@@ -158,13 +166,14 @@ const Getcar = () => {
                 <option value="">Default</option>
                 <option value="low-high">Price: Low → High</option>
                 <option value="high-low">Price: High → Low</option>
-              </select>
+              </select> 
             </div>
           </div>
         </div>
       </div>
 
       {/* Cars Grid */}
+        {/* // Card for each car. Displays image, name, brand, description, price, and action buttons. Has hover effects for interactivity. */}
       <div className="row g-4 mt-2">
         {filtered_products.map((car, index) => (
           <div className="col-md-6 col-lg-4" key={car.id || index}>
@@ -182,7 +191,7 @@ const Getcar = () => {
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
               e.currentTarget.style.boxShadow = "0 1rem 3rem rgba(0,0,0,0.2)";
-            }}>
+            }}> 
               
               {/* Image Container */}
               <div className="position-relative overflow-hidden" style={{ height: "240px" }}>
@@ -204,7 +213,7 @@ const Getcar = () => {
                 </div>
               </div>
 
-              {/* Card Body - Only car description, no fake features */}
+              {/* Card Body -  car description*/}
               <div className="card-body p-4" style={{ background: "#1e293b" }}>
                 <h4 className="card-title fw-bold mb-2" style={{ color: "#f1f5f9" }}>
                   {car.car_name}
@@ -214,7 +223,7 @@ const Getcar = () => {
                   {car.car_brand || "Premium Vehicle"}
                 </p>
                 
-                {/* Only real car description */}
+                {/*  car description */}
                 <p className="card-text mb-3" style={{ color: "#cbd5e1", fontSize: "0.9rem", lineHeight: "1.5" }}>
                   {car.car_description || "Experience luxury and comfort with this premium vehicle. Perfect for any occasion."}
                 </p>
@@ -244,7 +253,7 @@ const Getcar = () => {
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = "translateY(-2px)";
                     e.currentTarget.style.boxShadow = "0 5px 15px rgba(13,110,253,0.3)";
-                  }}
+                  }} // Button for booking the car. If user is not logged in, redirects to sign-in page. Otherwise, navigates to booking page with car details in state.
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "translateY(0)";
                     e.currentTarget.style.boxShadow = "none";
@@ -268,7 +277,7 @@ const Getcar = () => {
                       new CustomEvent("openChatbot", {
                         detail: {
                           message: `Tell me about ${car.car_brand} ${car.car_name}`
-                        }
+                        } // Dispatches a custom event to open the chatbot with a message about the specific car. The chatbot can listen for this event and respond accordingly.
                       })
                     )
                   }}

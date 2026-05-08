@@ -1,5 +1,6 @@
 import axios from "axios"
 import React, { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import Navbar from "./Navbar"
 
 const AdminDashboard = () => {
@@ -47,9 +48,8 @@ const AdminDashboard = () => {
       {loading && <p className="text-warning text-center">{loading}</p>}
       {error && <p className="text-danger text-center">{error}</p>}
 
-    
+      {/* Stats Cards */}
       <div className="row text-center mb-4">
-
         <div className="col-md-4 mb-3">
           <div className="card shadow-sm p-3">
             <h5>Total Bookings</h5>
@@ -70,46 +70,66 @@ const AdminDashboard = () => {
             <h2 className="text-warning">{users.length}</h2>
           </div>
         </div>
+      </div>
 
+      {/* Manage Users Button */}
+      <div className="text-center mb-4">
+        <Link to="/users">
+          <button 
+            className="btn btn-primary btn-lg px-5 py-2 fw-bold"
+            style={{
+              borderRadius: "50px",
+              transition: "all 0.3s ease",
+              fontSize: "1.1rem"
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 5px 15px rgba(0,0,0,0.2)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
+          >
+            👥 Proceed to Manage Users
+          </button>
+        </Link>
       </div>
 
       <h4 className="mb-3">📅 Recent Bookings</h4>
 
-     <div className="table-responsive">
-  <table className="table table-dark table-striped table-hover">
-
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Car</th>
-        <th>User ID</th>
-        <th>Start Date</th>
-        <th>End Date</th>
-        <th>Total</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-
-    <tbody>
-      {bookings.slice(0, 5).map((b, index) => (
-        <tr key={index}>
-          <td>{index + 1}</td>
-          <td>{b.car_name}</td>
-          <td>{b.user_id}</td>
-          <td>{b.start_date}</td>
-          <td>{b.end_date}</td>
-          <td>Ksh {b.total_price}</td>
-          <td>
-            <span className="badge bg-warning">
-              {b.payment_status}
-            </span>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-
-  </table>
-</div>
+      <div className="table-responsive">
+        <table className="table table-dark table-striped table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Car</th>
+              <th>User ID</th>
+              <th>Start Date</th>
+              <th>End Date</th>
+              <th>Total</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {bookings.slice(0, 5).map((b, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td>{b.car_name}</td>
+                <td>{b.user_id}</td>
+                <td>{b.start_date}</td>
+                <td>{b.end_date}</td>
+                <td>Ksh {b.total_price}</td>
+                <td>
+                  <span className="badge bg-warning">
+                    {b.payment_status}
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
     </div>
   )

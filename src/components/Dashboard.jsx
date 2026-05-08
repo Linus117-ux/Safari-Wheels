@@ -77,7 +77,7 @@ const Dashboard = () => {
               About Us
             </h2>
             <p className="text-white-50 mb-3" style={{ fontSize: "1.1rem", lineHeight: "1.6" }}>
-              At <strong className="text-primary">Linus Enterprises</strong>, we provide reliable and affordable
+              At <strong className="text-primary">Safari Wheels</strong>, we provide reliable and affordable
               car rental services designed to make your journey smooth and enjoyable.
               Whether you're traveling for business or leisure, we have the perfect
               vehicle for you.
@@ -348,7 +348,7 @@ const Dashboard = () => {
           <div className="row g-4">
             <div className="col-md-4">
               <h4 className="fw-bold mb-3">
-                <span className="text-primary">LINUS</span> <span className="text-white">ENTERPRISES</span>
+                <span className="text-primary">SAFARI</span> <span className="text-white">WHEELS</span>
               </h4>
               <p className="text-white-50">
                 Affordable and reliable car rentals across Nairobi. 

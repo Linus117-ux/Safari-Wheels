@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 
 const Book = () => {
-  const location = useLocation()
+  const location = useLocation() // Get current location to access passed state (car details) and for navigation purposes.
   const navigate = useNavigate()
   const { car } = location.state || {}
 
@@ -31,14 +31,14 @@ const Book = () => {
     const start = new Date(startdate)
     const end = new Date(enddate)
 
-    if (isNaN(start) || isNaN(end)) return
+    if (isNaN(start) || isNaN(end)) return  // Validate date objects
 
     if (end > start) {
-      const calculatedDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24))
+      const calculatedDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24))  // Calculate number of days between start and end dates. Uses Math.ceil to round up to the nearest whole day.
       const calculatedTotal = calculatedDays * Number(car.price_per_day)
       
       setDays(calculatedDays)
-      setTotal(calculatedTotal > 0 ? calculatedTotal : 0)
+      setTotal(calculatedTotal > 0 ? calculatedTotal : 0) // Ensure total is not negative, though it shouldn't be with valid input.
     } else {
       setDays(0)
       setTotal(0)
@@ -59,7 +59,7 @@ const Book = () => {
   const handlesubmit = async (e) => {
     e.preventDefault()
 
-    const user_id = localStorage.getItem("user_id")
+    const user_id = localStorage.getItem("user_id") // Get user ID from local storage to associate booking with the logged-in user.
 
     setError("")
     setSuccess("")
@@ -69,7 +69,7 @@ const Book = () => {
     if (!user_id) return navigate("/signin")
 
     if (!car?.car_id) {
-      setError("Car not found. Please try again.")
+      setError("Car not find. Please try again.")
       return
     }
 
@@ -106,7 +106,7 @@ const Book = () => {
           total_price: Number(total)
         },
         {
-          headers: {
+          headers: { // Explicitly set content type to JSON for the booking creation request. The backend should be able to handle this format.
             "Content-Type": "application/json"
           }
         }
@@ -146,7 +146,7 @@ const Book = () => {
 
   // Format date for display
   const formatDate = (dateString) => {
-    if (!dateString) return ""
+    if (!dateString) return "" // Handle empty or invalid date strings gracefully
     const date = new Date(dateString)
     return date.toLocaleDateString('en-US', { 
       year: 'numeric', 
@@ -164,7 +164,7 @@ const Book = () => {
             <h1 className="display-5 fw-bold" style={{ color: "#084ab4" }}>
               🚗 Complete Your Booking
             </h1>
-            <p className="text-muted">Review your rental details and confirm your booking</p>
+            <p className="">Review your rental details and confirm your booking</p>
           </div>
 
           {/* Main Content */}
@@ -266,7 +266,7 @@ const Book = () => {
                             value={startdate}
                             onChange={(e) => setStartdate(e.target.value)}
                             className="form-control form-control-lg"
-                            min={new Date().toISOString().split('T')[0]}
+                            min={new Date().toISOString().split('T')[0]}  // Prevent selecting past dates for the start date.
                             style={{ borderRadius: "12px" }}
                           />
                           <small className="">Pick-up Date</small>
@@ -277,7 +277,7 @@ const Book = () => {
                             value={enddate}
                             onChange={(e) => setEnddate(e.target.value)}
                             className="form-control form-control-lg"
-                            min={startdate || new Date().toISOString().split('T')[0]}
+                            min={startdate || new Date().toISOString().split('T')[0]}  // End date cannot be before start date.
                             style={{ borderRadius: "12px" }}
                           />
                           <small className="">Return Date</small>

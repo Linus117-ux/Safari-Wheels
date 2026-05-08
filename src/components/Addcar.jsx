@@ -16,7 +16,7 @@ const Addcar = () => {
   const [error, setError] = useState("")
 
   
-  useEffect(() => {
+  useEffect(() => {  // Check if user is admin on component mount
     const role = localStorage.getItem("role");
 
     if (role !== "admin") {
