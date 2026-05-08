@@ -11,13 +11,15 @@ const Getcar = () => {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("")
   const user = localStorage.getItem("user_id"); 
-  // {// Gets logged-in user from browser storage.}
+  // Gets logged-in user from browser storage
   const [brand, setBrand] = useState("");
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [sort, setSort] = useState("");
+  const [visibleCount, setVisibleCount] = useState(6); // State for pagination/load more
+  const [isLoadingMore, setIsLoadingMore] = useState(false); // Loading state for load more button
   
-  // Creates filtered and sorted cars list.
+  // Creates filtered and sorted cars list
   const filtered_products = cars 
     .filter((item) => {
       // Avoids error if search is null/undefined. Converts to lowercase for case-insensitive search.
@@ -27,10 +29,10 @@ const Getcar = () => {
       const desc = (item.car_description || "").toLowerCase();
       const carBrand = (item.car_brand || "").toLowerCase();
      
-      const matchesSearch = name.includes(searchTerm) || desc.includes(searchTerm) || carBrand.includes(searchTerm);  // Checks if search term is in name, description, or brand.
+      const matchesSearch = name.includes(searchTerm) || desc.includes(searchTerm) || carBrand.includes(searchTerm); // Checks if search term is in name, description, or brand.
       const matchesBrand = brandTerm === "" || carBrand.includes(brandTerm); // If brand filter is empty, matches all. Otherwise checks if car brand includes the filter term.
       const price = Number(item.price_per_day); // Converts price to number for comparison. Assumes price_per_day is a valid number string.
-      const matchesPrice = (!minPrice || price >= Number(minPrice)) && (!maxPrice || price <= Number(maxPrice));//
+      const matchesPrice = (!minPrice || price >= Number(minPrice)) && (!maxPrice || price <= Number(maxPrice)); // Checks if price is within min and max range. If minPrice is empty, ignores lower bound. If maxPrice is empty, ignores upper bound.
       return matchesSearch && matchesBrand && matchesPrice; // Only includes cars that match all filters.
     })
     .sort((a, b) => {
@@ -39,17 +41,37 @@ const Getcar = () => {
       return 0;
     });
 
+  // Get visible cars based on load more count
+  const visibleCars = filtered_products.slice(0, visibleCount);
+  const hasMoreCars = visibleCount < filtered_products.length;
+
   const getcars = async () => {
     setLoading("Please wait");
     try {
       const response = await axios.get("https://linushiggs.alwaysdata.net/api/getproducts");
       setCars(response.data);
       setLoading("");
+      setVisibleCount(6); // Reset visible count when new cars are loaded
     } catch (error) {
       setError("Failed to load cars");
       setLoading("");
     }
   };
+
+  // Load more cars function
+  const loadMoreCars = () => {
+    setIsLoadingMore(true);
+    // Simulate loading delay for smooth UX
+    setTimeout(() => {
+      setVisibleCount(prevCount => prevCount + 6);
+      setIsLoadingMore(false);
+    }, 500);
+  };
+
+  // Reset visible count when filters change
+  useEffect(() => {
+    setVisibleCount(6);
+  }, [search, brand, minPrice, maxPrice, sort]);
 
   useEffect(() => {
     getcars();
@@ -106,7 +128,7 @@ const Getcar = () => {
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
-            </div> 
+            </div>
           
               {/* // Input for filtering cars by brand. Updates 'brand' state on change. */}
             <div className="col-md-2">
@@ -134,9 +156,10 @@ const Getcar = () => {
                 placeholder="Min $"
                 value={minPrice}
                 onChange={(e) => setMinPrice(e.target.value)}
-              />
-            </div> 
+                />
+                </div>
 
+              {/* // Input for filtering cars by maximum price. Updates 'maxPrice' state on change. */}
             <div className="col-md-2">
               <label className="form-label fw-semibold text-white">
                 <i className="bi bi-wallet2 me-2 text-primary"></i>Max Price
@@ -149,8 +172,7 @@ const Getcar = () => {
                 value={maxPrice}
                 onChange={(e) => setMaxPrice(e.target.value)}
               />
-            </div> 
-            {/* // Input for filtering cars by maximum price. Updates 'maxPrice' state on change. */}
+            </div>
 
             <div className="col-md-3">
               <label className="form-label fw-semibold text-white">
@@ -173,9 +195,8 @@ const Getcar = () => {
       </div>
 
       {/* Cars Grid */}
-        {/* // Card for each car. Displays image, name, brand, description, price, and action buttons. Has hover effects for interactivity. */}
       <div className="row g-4 mt-2">
-        {filtered_products.map((car, index) => (
+        {visibleCars.map((car, index) => (
           <div className="col-md-6 col-lg-4" key={car.id || index}>
             <div className="card h-100 border-0 shadow-lg" style={{ 
               borderRadius: "20px", 
@@ -192,6 +213,7 @@ const Getcar = () => {
               e.currentTarget.style.transform = "translateY(0)";
               e.currentTarget.style.boxShadow = "0 1rem 3rem rgba(0,0,0,0.2)";
             }}> 
+            {/* // Card for each car. Displays image, name, brand, description, price, and action buttons. Has hover effects for interactivity. */}
               
               {/* Image Container */}
               <div className="position-relative overflow-hidden" style={{ height: "240px" }}>
@@ -213,7 +235,7 @@ const Getcar = () => {
                 </div>
               </div>
 
-              {/* Card Body -  car description*/}
+              {/* Card Body - Car Details Section */}
               <div className="card-body p-4" style={{ background: "#1e293b" }}>
                 <h4 className="card-title fw-bold mb-2" style={{ color: "#f1f5f9" }}>
                   {car.car_name}
@@ -223,7 +245,7 @@ const Getcar = () => {
                   {car.car_brand || "Premium Vehicle"}
                 </p>
                 
-                {/*  car description */}
+                {/* Car Description */}
                 <p className="card-text mb-3" style={{ color: "#cbd5e1", fontSize: "0.9rem", lineHeight: "1.5" }}>
                   {car.car_description || "Experience luxury and comfort with this premium vehicle. Perfect for any occasion."}
                 </p>
@@ -235,7 +257,7 @@ const Getcar = () => {
                 </div>
               </div>
 
-              {/* Card Footer */}
+              {/* Card Footer with Action Buttons */}
               <div className="card-footer bg-transparent border-0 p-4 pt-0" style={{ background: "#1e293b" }}>
                 <button 
                   className="btn btn-primary w-100 mb-2 fw-semibold py-2"
@@ -277,7 +299,7 @@ const Getcar = () => {
                       new CustomEvent("openChatbot", {
                         detail: {
                           message: `Tell me about ${car.car_brand} ${car.car_name}`
-                        } // Dispatches a custom event to open the chatbot with a message about the specific car. The chatbot can listen for this event and respond accordingly.
+                        } // Dispatches custom event to open chatbot with specific car details; Chatbot component listens for this event
                       })
                     )
                   }}
@@ -298,6 +320,62 @@ const Getcar = () => {
           </div>
         ))}
       </div>
+      
+      {/* Load More Button */}
+      {!loading && filtered_products.length > 0 && (
+        <div className="text-center mt-5">
+          {hasMoreCars ? (
+            <button
+              className="btn px-5 py-3 fw-semibold"
+              onClick={loadMoreCars}
+              disabled={isLoadingMore}
+              style={{
+                borderRadius: "50px",
+                background: "linear-gradient(135deg, #3b82f6, #2563eb)",
+                color: "white",
+                border: "none",
+                transition: "all 0.3s ease",
+                fontSize: "1rem",
+                boxShadow: "0 4px 15px rgba(59, 130, 246, 0.3)"
+              }}
+              onMouseEnter={(e) => {
+                if (!isLoadingMore) {
+                  e.currentTarget.style.transform = "translateY(-3px)";
+                  e.currentTarget.style.boxShadow = "0 8px 25px rgba(59, 130, 246, 0.4)";
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 4px 15px rgba(59, 130, 246, 0.3)";
+              }}
+            >
+              {isLoadingMore ? (
+                <>
+                  <span className="spinner-border spinner-border-sm me-2"></span>
+                  Loading More Cars...
+                </>
+              ) : (
+                <>
+                  <i className="bi bi-arrow-down-circle me-2 fs-5"></i>
+                  Load More Cars ({filtered_products.length - visibleCount} remaining)
+                </>
+              )}
+            </button>
+          ) : (
+            <div className="mt-4 p-3 rounded-3" style={{ background: "#1e293b", borderRadius: "12px" }}>
+              <p className="text-white-50 mb-0">
+                <i className="bi bi-check-circle-fill text-success me-2"></i>
+                You've seen all {filtered_products.length} cars! 🎉
+              </p>
+            </div>
+          )}
+          
+          {/* Show current count */}
+          <p className="text-white-50 small mt-3">
+            Showing {visibleCars.length} of {filtered_products.length} cars
+          </p>
+        </div>
+      )}
       
       {/* No Results Message */}
       {filtered_products.length === 0 && !loading && (
